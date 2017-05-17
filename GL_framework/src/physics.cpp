@@ -120,6 +120,41 @@ void PhysicsInit() {
 void PhysicsUpdate(float dt) {
 	//TODO
 
+	////Calculamos primero las fuerzas que afectan las particulas
+	//for (int i = 0; i < ClothMesh::numVerts; i++) {
+	//	Calculate_Forces(partArray[i]);
+	//}
+
+	//Actualizamos la posicion de las particulas
+	if (Utils::solver == EULER) {
+		for (int i = 0; i < ClothMesh::numVerts; i++) {
+			if (!partArray[i].fixed) {
+				Solver_Waves(&partArray[i], Utils::WaveDirection, Utils::A, Utils::W, Utils::percent_3);
+				//Collision_Manager(&partArray[i], esfera, Utils::solver);
+			}		
+		}
+		Solver_Sphere(esfera, dt);
+	}
+
+	//------ UPDATE ZONE -------
+	//Update de las particulas
+	float *partVerts = new float[ClothMesh::numVerts * 3];
+	for (int i = 0; i < ClothMesh::numVerts; ++i) {
+			partVerts[i * 3 + 0] = partArray[i].currentPos.x;
+			partVerts[i * 3 + 1] = partArray[i].currentPos.y;
+			partVerts[i * 3 + 2] = partArray[i].currentPos.z;
+			//std::cout << partArray[i].OriginalPos.x << std::endl;
+			//std::cout << partArray[i].OriginalPos.y << std::endl;
+			//std::cout << partArray[i].OriginalPos.z << std::endl;
+			//std::cout << "----------------------" << std::endl;
+	}
+	ClothMesh::updateClothMesh(partVerts);
+	
+	delete[] partVerts;
+
+	//update de la esfera
+	Sphere::updateSphere(esfera->pos, esfera->radius);
+
 	//aqui entra cada 1 segundos
 	if (Utils::percent > 0.33f) {
 		Utils::time++;
@@ -142,42 +177,6 @@ void PhysicsUpdate(float dt) {
 	Utils::percent += dt; //contador incremental
 	Utils::percent_2 += dt; //contador incremental
 	Utils::percent_3 += dt; //contador incremental
-
-	////Calculamos primero las fuerzas que afectan las particulas
-	//for (int i = 0; i < ClothMesh::numVerts; i++) {
-	//	Calculate_Forces(partArray[i]);
-	//}
-
-	//Actualizamos la posicion de las particulas
-	if (Utils::solver == EULER) {
-		for (int i = 0; i < ClothMesh::numVerts; i++) {
-			if (!partArray[i].fixed) {
-				Solver(&partArray[i], Utils::WaveDirection, Utils::A, Utils::W, Utils::percent_3);
-				//Collision_Manager(&partArray[i], esfera, Utils::solver);
-			}
-		}
-	}
-
-	//------ UPDATE ZONE -------
-	//Update de las particulas
-	float *partVerts = new float[ClothMesh::numVerts * 3];
-	for (int i = 0; i < ClothMesh::numVerts; ++i) {
-			partVerts[i * 3 + 0] = partArray[i].currentPos.x;
-			partVerts[i * 3 + 1] = partArray[i].currentPos.y;
-			partVerts[i * 3 + 2] = partArray[i].currentPos.z;
-			//std::cout << partArray[i].OriginalPos.x << std::endl;
-			//std::cout << partArray[i].OriginalPos.y << std::endl;
-			//std::cout << partArray[i].OriginalPos.z << std::endl;
-			//std::cout << "----------------------" << std::endl;
-	}
-	ClothMesh::updateClothMesh(partVerts);
-	
-	delete[] partVerts;
-
-	//update de la esfera
-	Sphere::updateSphere(esfera->pos, esfera->radius);
-
-
 
 }
 void PhysicsCleanup() {

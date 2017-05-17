@@ -8,7 +8,10 @@
 
 class Esfera {
 public:
-	glm::vec3 pos; //Stores Current Position
+	glm::vec3 pos, lastPos; //Stores Current and Last Position
+	glm::vec3 currentV, lastV; //Stores Current and Last Velocity
+	glm::vec3 forces; //Stores the resultant of the forces applied to this particle in a determined instant of time
+
 	float radius; //radius of the sphere
 
 	Esfera();
