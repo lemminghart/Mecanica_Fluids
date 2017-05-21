@@ -12,7 +12,7 @@ Particle::Particle(bool fix, glm::vec3 pos) {
 
 	//setup the initial parameters (position)
 	currentPos = pos;
-
+	lastPos = pos;
 	OriginalPos = pos;
 
 	//setup the initial speed
@@ -38,7 +38,7 @@ Particle::Particle(Particle *part, float separationX, float separationZ) {
 	currentPos.x = part->currentPos.x + separationX;
 	currentPos.y = part->currentPos.y;
 	currentPos.z = part->currentPos.z + separationZ;
-
+	lastPos = currentPos;
 	OriginalPos = currentPos;
 
 	//setup the initial speed

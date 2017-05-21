@@ -130,7 +130,7 @@ void PhysicsUpdate(float dt) {
 		for (int i = 0; i < ClothMesh::numVerts; i++) {
 			if (!partArray[i].fixed) {
 				Solver_Waves(&partArray[i], Utils::WaveDirection, Utils::A, Utils::W, Utils::percent_3);
-				//Collision_Manager(&partArray[i], esfera, Utils::solver);
+				Collision_Manager(&partArray[i], esfera, Utils::solver);
 			}		
 		}
 		Solver_Sphere(esfera, dt);
