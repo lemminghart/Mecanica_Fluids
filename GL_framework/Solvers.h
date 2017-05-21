@@ -5,7 +5,7 @@
 #include "../Particle.h"
 #include "../Sphere.h"
 
-#define GRAVITY -9.81
+#define GRAVITY -9.81f
 
 enum SOLVER { EULER = 0, VERLET = 1 };
 
