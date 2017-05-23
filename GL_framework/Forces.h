@@ -3,7 +3,13 @@
 #include "../Collision.h"
 #include "../Sphere.h"
 
+#define _USE_MATH_DEFINES
+
+#include <glm\gtc\matrix_transform.hpp>
+#include <math.h>
+
 #define C_Drag 0.47f
+#define Cross_Sectional_Area (esfera->radius * 2.f * M_PI) / 2.f //el area de un circulo de diametro entre 0 i (esfera->radio *2) 
 #define C_Lift 0.15f
 
 static void Calculate_Buoyancy(Esfera *esfera) {
@@ -39,14 +45,14 @@ static void Calculate_Buoyancy(Esfera *esfera) {
 	
 }
 
-static float Calculate_Drag(Esfera *esfera) {
+static void Calculate_Drag(Esfera *esfera) {
 	//formula
 	//F = -0.5f * density * Drag_coefficient * crossSectionalArea * RelativeVelocityBetweenObject&Fluid
 
-	esfera->forces += -0.5f * esfera->density * C_Drag;
+	esfera->forces += -0.5f * esfera->density * C_Drag * Cross_Sectional_Area * glm::normalize(esfera->currentV) * esfera->currentV;
 }
 
-static float Calculate_Lift(Esfera *esfera) {
+static void Calculate_Lift(Esfera *esfera) {
 	//formula
 	//F = -0.5f * density * Lift_coefficient * crossSectionalArea * RelativeVelocityBetweenObject&Fluid * 
 
@@ -60,6 +66,7 @@ static void Calculate_Forces(Esfera *esfera) {
 
 	//calculate forces
 	Calculate_Buoyancy(esfera);
+	Calculate_Drag(esfera);
 
 	esfera->collision = false;
 
