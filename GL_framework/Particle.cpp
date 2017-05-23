@@ -51,7 +51,9 @@ Particle::Particle(Particle *part, float separationX, float separationZ) {
 	lastV.z = currentV.z;
 }
 
+Particle::Particle() {
 
+}
 
 Particle::~Particle() {
 

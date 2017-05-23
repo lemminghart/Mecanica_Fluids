@@ -15,6 +15,9 @@ public:
 	float density; //density of the sphere
 	float radius; //radius of the sphere
 	float mass; //mass of the sphere
+	float area; //area of the sphere
+
+	bool collision;
 
 	Esfera();
 	~Esfera();

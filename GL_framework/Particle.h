@@ -4,6 +4,7 @@
 #include <glm\gtc\type_ptr.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
+#define AvgParts 4
 
 class Particle {
 public:
@@ -14,9 +15,12 @@ public:
 	bool fixed; //states if particle is animated or not
 	int index;
 
+	Particle();
 	Particle(bool fix, glm::vec3 pos);
 	Particle(Particle *part, float separationX, float separationZ);
 	~Particle();
 };
 
 static std::vector <Particle> partArray; //vector de particulas
+
+static Particle partForces_parts[AvgParts];

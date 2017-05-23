@@ -176,7 +176,7 @@ static bool Check_Sphere_Collision(Particle *part, Esfera *esfera) {
 	float check = Calculate_Distance(part->currentPos, esfera->pos);
 
 	if (check <= esfera->radius) {
-		//std::cout << "COLLISION" << std::endl;
+	/*	std::cout << "COLLISION" << std::endl;*/
 		return true;
 	}
 	else {
@@ -237,21 +237,21 @@ static void Box_Collision(Particle *part, int solver) {
 	}
 }
 
-static void Sphere_Collision(Particle *part, Esfera *esfera, int solver) {
+static bool Sphere_Collision(Particle *part, Esfera *esfera, int solver) {
 	
 	//primero hay que checkear si hay colision
 	if (Check_Sphere_Collision(part, esfera)) {
 		//Calculate_Sphere_Collision(part, esfera, solver);
-
+		return true;
 	}
 }
 
 //Calcula TODAS las colisiones del programa
-static void Collision_Manager(Particle *part, Esfera *esfera, int solver) {
+static bool Collision_Manager(Particle *part, Esfera *esfera, int solver) {
 
 	////Check collision with BOX
 	//Box_Collision(part, solver);
 
 	//Check collision with the sphere
-	Sphere_Collision(part, esfera, solver);
+	return Sphere_Collision(part, esfera, solver);
 }

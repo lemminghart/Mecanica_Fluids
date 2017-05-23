@@ -13,6 +13,8 @@ Esfera::Esfera() {
 
 	density = (4.f * M_PI * pow(radius, 3.f)) / 3.f;
 
+	area = 4.f * M_PI * pow(radius, 2.f);
+
 	//setup the initial position
 	pos.x = ((float)rand() / RAND_MAX) * 8.f - 4.f;
 	pos.y = ((float)rand() / RAND_MAX) * 3.f + 5.f;
@@ -32,7 +34,7 @@ Esfera::Esfera() {
 	//setup the last velocity
 	lastV = currentV;
 
-
+	collision = false;
 }
 
 Esfera::~Esfera() {

@@ -39,6 +39,8 @@ static void Solver_Sphere(Esfera *Sphere, float dt) {
 	Sphere->currentV.x = Sphere->currentV.x + (dt * Sphere->forces.x);
 	Sphere->currentV.y = Sphere->currentV.y + (dt * (GRAVITY + Sphere->forces.y));
 	Sphere->currentV.z = Sphere->currentV.z + (dt * Sphere->forces.z);
+
+	Sphere->forces = glm::vec3(0.f);
 }
 
 //static void Verlet_Solver(Particle *part, float dt) {

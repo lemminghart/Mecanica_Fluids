@@ -13,6 +13,8 @@
 #include "../Sphere.h"
 #include "../Forces.h"
 
+
+
 namespace ClothMesh {
 	extern void setupClothMesh();
 	extern void cleanupClothMesh();
@@ -61,6 +63,8 @@ namespace Utils {
 
 //variable global de la esfera
 Esfera *esfera;
+//vector global que almacena las particulas mas cercanas a la esfera
+float partForces[AvgParts];
 
 
 bool show_test_window = false;
@@ -105,6 +109,8 @@ void PhysicsInit() {
 		}
 	}
 
+	
+
 	//partArray.pop_back();
 
 	//for (int i = 0; i < ClothMesh::numVerts; i++) {
@@ -125,16 +131,40 @@ void PhysicsUpdate(float dt) {
 	//	Calculate_Forces(partArray[i]);
 	//}
 
+	Solver_Sphere(esfera, dt);
+
 	//Actualizamos la posicion de las particulas
 	if (Utils::solver == EULER) {
 		for (int i = 0; i < ClothMesh::numVerts; i++) {
 			if (!partArray[i].fixed) {
 				Solver_Waves(&partArray[i], Utils::WaveDirection, Utils::A, Utils::W, Utils::percent_3);
-				Collision_Manager(&partArray[i], esfera, Utils::solver);
+				esfera->collision = Collision_Manager(&partArray[i], esfera, Utils::solver);
+				if (esfera->collision) {
+					//std::cout << "COLLISION_3" << std::endl;
+				}
 			}		
-		}
-		Solver_Sphere(esfera, dt);
+		}	
 	}
+
+	//aqui me quedo con las 4 particulas mas cercanas a la esfera SI HAY COLISION
+	
+
+	//	std::cout << "COLLISION_4" << std::endl;
+		for (int i = 0; i < AvgParts; i++) {
+			partForces[i] = 0.f;
+			partForces_parts[i] = Particle();
+		}
+
+		for (int i = 0; i < ClothMesh::numVerts; i++) {
+			for (int j = 0; j < AvgParts; j++) {
+				if (Calculate_Distance(partArray[i].currentPos, esfera->pos) < partForces[j]) {
+					partForces_parts[j] = partArray[i];
+					break;
+				}
+			}
+		}
+		Calculate_Forces(esfera);
+	
 
 	//------ UPDATE ZONE -------
 	//Update de las particulas
