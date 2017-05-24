@@ -9,7 +9,7 @@ Esfera::Esfera() {
 	//setup the initial parameters
 	radius = ((float)rand() / RAND_MAX) * 1.f + .5f;
 
-	mass = 1.f;
+	mass = 4.f;
 
 	density = (4.f * M_PI * pow(radius, 3.f)) / 3.f;
 

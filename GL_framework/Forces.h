@@ -9,7 +9,7 @@
 #include <math.h>
 
 #define C_Drag 0.47f
-#define Cross_Sectional_Area (esfera->radius * 2.f * M_PI) / 2.f //el area de un circulo de diametro entre 0 i (esfera->radio *2) 
+//#define Cross_Sectional_Area (esfera->radius * 2.f * M_PI) / 2.f //el area de un circulo de diametro entre 0 i (esfera->radio *2) 
 #define C_Lift 0.15f
 
 static void Calculate_Buoyancy(Esfera *esfera) {
@@ -20,8 +20,6 @@ static void Calculate_Buoyancy(Esfera *esfera) {
 	float Vsub;
 	float avg_Y = 0;
 	float submergido;
-
-	esfera->forces = glm::vec3(0.f);
 
 	for (int i = 0; i < AvgParts; i++) {
 		avg_Y += partForces_parts[i].currentPos.y;
@@ -48,6 +46,23 @@ static void Calculate_Buoyancy(Esfera *esfera) {
 static void Calculate_Drag(Esfera *esfera) {
 	//formula
 	//F = -0.5f * density * Drag_coefficient * crossSectionalArea * RelativeVelocityBetweenObject&Fluid
+
+	float avg_Y = 0;
+	float submergido;
+
+	for (int i = 0; i < AvgParts; i++) {
+		avg_Y += partForces_parts[i].currentPos.y;
+	}
+
+	avg_Y = avg_Y / AvgParts;
+
+	submergido = avg_Y - (esfera->pos.y - esfera->radius);
+
+	float r = sqrt((esfera->radius*esfera->radius)-(submergido * submergido));
+	float Cross_Sectional_Area;
+
+	if (r > 0) Cross_Sectional_Area = M_PI * r * r;
+	else Cross_Sectional_Area = 0;
 
 	esfera->forces += -0.5f * esfera->density * C_Drag * Cross_Sectional_Area * glm::normalize(esfera->currentV) * esfera->currentV;
 }
